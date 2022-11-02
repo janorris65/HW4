@@ -12,26 +12,15 @@ startBtn.addEventListener("click", function (event) {
   displayFunction(numlog);
   countDown();
 });
-//code block for timer, includes answer check and time adjustment
+//code block for timer, answercheck changes TIMER, includes Time<0 message
 function countDown() {
-  let i = TIMER;
   const timerdown = setInterval(function () {
-    digitalTimer.textContent = i;
-    i--;
-    // code block to check answer and adjust time
-    if (
-      buttons.forEach(function (button) {
-        button.addEventListener("click", function (event) {
-          if (event.target.textContent === overHead[numlog].answer) {
-            i = Number(digitalTimer.textContent) + 10;
-          } else {
-            i = Number(digitalTimer.textContent - 5);
-          }
-        });
-      })
-    );
-    if (i < 0) {
+    digitalTimer.textContent = TIMER;
+    TIMER--;
+    if (TIMER < 0) {
       clearInterval(timerdown);
+      var elfinal = document.getElementById("score");
+      elfinal.textContent = "You've Lost";
     }
   }, INTERVAL);
 }
@@ -69,15 +58,39 @@ const Q1 = new questionCreator(
 const Q2 = new questionCreator(
   "Did John Adams like you?",
   ["yes", "no", "maybe", "on good days"],
-  "no"
+  "maybe"
 );
 const Q3 = new questionCreator(
   "Did Thomas Jefferson like you?",
   ["yes", "no", "maybe", "on good days"],
   "no"
 );
-let overHead = [Q0, Q1, Q2, Q3]; //array for question storage
-
+const Q4 = new questionCreator(
+  "Did James Madison like you?",
+  ["yes", "no", "maybe", "on good days"],
+  "yes"
+);
+const Q5 = new questionCreator(
+  "Did James Monroe like you?",
+  ["yes", "no", "maybe", "on good days"],
+  "no"
+);
+let overHead = [Q0, Q1, Q2, Q3, Q4, Q5]; //array for question storage
+// code block for answer check and time adjust
+buttons.forEach(function (button) {
+  button.addEventListener("click", function (event) {
+    if (event.target.textContent === overHead[numlog].answer) {
+      TIMER = Number(digitalTimer.textContent) + 10;
+    } else {
+      TIMER = Number(digitalTimer.textContent - 5);
+    }
+  });
+});
+// code block to display score and save when called
+function finalScore() {
+  var elfinal = document.getElementById("score");
+  elfinal.textContent = digitalTimer.textContent;
+}
 // Code Block for advancing questions with each click
 buttons.forEach(function (button) {
   button.addEventListener("click", function (event) {
@@ -86,9 +99,16 @@ buttons.forEach(function (button) {
       x++;
       numlog = x;
     }
-    console.log(numlog);
+    if (numlog === overHead.length) {
+      setTimeout(function () {
+        var elfinal = document.getElementById("score");
+        elfinal.textContent = digitalTimer.textContent;
+      }, 2000);
+    }
     displayFunction(numlog);
   });
 });
+
+//TODO save the score and initials
 
 // TODO make a question maker form
