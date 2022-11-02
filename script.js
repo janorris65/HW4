@@ -12,19 +12,24 @@ startBtn.addEventListener("click", function (event) {
   displayFunction(numlog);
   countDown();
 });
-// code block to check answer
-buttons.forEach(function (button) {
-  button.addEventListener("click", function (event) {
-    if (event.target.textContent === overHead[numlog].answer) {
-    }
-  });
-});
-//code block for timer
+//code block for timer, includes answer check and time adjustment
 function countDown() {
   let i = TIMER;
   const timerdown = setInterval(function () {
     digitalTimer.textContent = i;
     i--;
+    // code block to check answer and adjust time
+    if (
+      buttons.forEach(function (button) {
+        button.addEventListener("click", function (event) {
+          if (event.target.textContent === overHead[numlog].answer) {
+            i = Number(digitalTimer.textContent) + 10;
+          } else {
+            i = Number(digitalTimer.textContent - 5);
+          }
+        });
+      })
+    );
     if (i < 0) {
       clearInterval(timerdown);
     }
@@ -87,4 +92,3 @@ buttons.forEach(function (button) {
 });
 
 // TODO make a question maker form
-// TODO make timer subtracting from wrong answers
