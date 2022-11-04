@@ -4,6 +4,8 @@ const INTERVAL = 1000;
 let TIMER = 10;
 const digitalTimer = document.getElementById("countdown");
 let numlog = 0;
+let internalScore = 10;
+let isGameOver = false;
 
 //Start button functionality displays 1st Question 'displayFunction, timer start 'countDown' and 'numlog' to advance q
 startBtn.addEventListener("click", function (event) {
@@ -15,9 +17,9 @@ startBtn.addEventListener("click", function (event) {
 //code block for timer, answercheck changes TIMER, includes Time<0 message
 function countDown() {
   const timerdown = setInterval(function () {
-    digitalTimer.textContent = TIMER;
-    TIMER--;
-    if (TIMER < 0) {
+    internalScore--;
+    digitalTimer.textContent = internalScore;
+    if (internalScore < 0 || isGameOver === true) {
       clearInterval(timerdown);
       var elfinal = document.getElementById("score");
       elfinal.textContent = "You've Lost";
@@ -41,6 +43,7 @@ function displayFunction(x) {
   var eloption4 = document.getElementById("option4");
   eloption4.textContent = overHead[x].options[3];
 }
+//code block for timer display
 
 // code block to create questions
 function questionCreator(question, options, answer) {
@@ -80,9 +83,9 @@ let overHead = [Q0, Q1, Q2, Q3, Q4, Q5]; //array for question storage
 buttons.forEach(function (button) {
   button.addEventListener("click", function (event) {
     if (event.target.textContent === overHead[numlog].answer) {
-      TIMER = Number(digitalTimer.textContent) + 10;
+      internalscore += 10;
     } else {
-      TIMER = Number(digitalTimer.textContent - 5);
+      internalscore -= 5;
     }
   });
 });
@@ -100,10 +103,9 @@ buttons.forEach(function (button) {
       numlog = x;
     }
     if (numlog === overHead.length) {
-      setTimeout(function () {
-        var elfinal = document.getElementById("score");
-        elfinal.textContent = digitalTimer.textContent;
-      }, 2000);
+      isGameOver = true;
+      var elfinal = document.getElementById("score");
+      elfinal.textContent = internalScore;
     }
     displayFunction(numlog);
   });
