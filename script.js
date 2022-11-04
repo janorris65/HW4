@@ -14,7 +14,7 @@ startBtn.addEventListener("click", function (event) {
   displayFunction(numlog);
   countDown();
 });
-//code block for timer, answercheck changes TIMER, includes Time<0 message
+//code block for timer, answercheck changes internalscore, includes Time<0 message and game over message
 function countDown() {
   const timerdown = setInterval(function () {
     internalScore--;
@@ -83,17 +83,13 @@ let overHead = [Q0, Q1, Q2, Q3, Q4, Q5]; //array for question storage
 buttons.forEach(function (button) {
   button.addEventListener("click", function (event) {
     if (event.target.textContent === overHead[numlog].answer) {
-      internalscore += 10;
+      internalScore += 10;
     } else {
-      internalscore -= 5;
+      internalScore -= 5;
     }
   });
 });
-// code block to display score and save when called
-function finalScore() {
-  var elfinal = document.getElementById("score");
-  elfinal.textContent = digitalTimer.textContent;
-}
+
 // Code Block for advancing questions with each click
 buttons.forEach(function (button) {
   button.addEventListener("click", function (event) {
