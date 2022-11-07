@@ -10,7 +10,11 @@ This quiz game starts with the start button. (I was unable to accomplish a "hidd
 
 Basic CSS style.
 
-## Usage
+#https://janorris65.github.io/HW4/
+
+![Webcapture](assets/Webcapture.jpeg)
+
+# Usage
 
 Simply answer questions.
 
