@@ -1,5 +1,5 @@
 const buttons = document.querySelectorAll("button");
-const startBtn = document.getElementById("StartBtn");
+var startBtn = document.getElementById("StartBtn");
 const INTERVAL = 1000;
 let TIMER = 10;
 const digitalTimer = document.getElementById("countdown");
@@ -10,10 +10,10 @@ var submitEl = document.querySelector("#submit");
 var nameInput = document.querySelector("#initials");
 var submissionResponseEl = document.querySelector("#response");
 var form = document.querySelector("form");
-
+var dispSvdScore = document.getElementById("displaySvdScore");
 //Start button functionality displays 1st Question 'displayFunction, timer start 'countDown' and 'numlog' to advance q
 startBtn.addEventListener("click", function (event) {
-  startBtn.textContent = "";
+  startBtn.hidden = true;
   numlog = 1;
   displayFunction(numlog);
   countDown();
@@ -60,31 +60,32 @@ function questionCreator(question, options, answer) {
 
 const Q0 = new questionCreator("", "", "");
 const Q1 = new questionCreator(
-  "Did George Washington like you?",
+  "Did George Washington like you? hint:no",
   ["yes", "no", "maybe", "on good days"],
   "no"
 );
 const Q2 = new questionCreator(
-  "Did John Adams like you?",
+  "Did John Adams like you? hint:maybe",
   ["yes", "no", "maybe", "on good days"],
   "maybe"
 );
 const Q3 = new questionCreator(
-  "Did Thomas Jefferson like you?",
+  "Did Thomas Jefferson like you? hint:no",
   ["yes", "no", "maybe", "on good days"],
   "no"
 );
 const Q4 = new questionCreator(
-  "Did James Madison like you?",
+  "Did James Madison like you? hint:yes",
   ["yes", "no", "maybe", "on good days"],
   "yes"
 );
 const Q5 = new questionCreator(
-  "Did James Monroe like you?",
+  "Did James Monroe like you? hint:no",
   ["yes", "no", "maybe", "on good days"],
   "no"
 );
 let overHead = [Q0, Q1, Q2, Q3, Q4, Q5]; //array for question storage
+
 // code block for answer check and time adjust
 buttons.forEach(function (button) {
   button.addEventListener("click", function (event) {
@@ -96,7 +97,7 @@ buttons.forEach(function (button) {
   });
 });
 
-// Code Block for advancing questions with each click
+// Code Block for advancing questions with each click, unhiding initial score
 buttons.forEach(function (button) {
   button.addEventListener("click", function (event) {
     let x = numlog;
@@ -113,13 +114,18 @@ buttons.forEach(function (button) {
     displayFunction(numlog);
   });
 });
-
+// Code Block for initial and score submission to local storage, unhidiing display score
 submitEl.addEventListener("click", showResponse);
 function showResponse(event) {
   // Prevent default action
   event.preventDefault();
   var response = "Thank you for your submission " + nameInput.value + ".";
   submissionResponseEl.textContent = response;
-  localStorage.setItem(internalScore, nameInput.value);
+  localStorage.setItem("finalInitialScore", [nameInput.value, internalScore]);
+  dispSvdScore.hidden = false;
 }
-// TODO display scores
+// Code block to display saved intials and score
+dispSvdScore.addEventListener("click", function (event) {
+  const lclInitialScore = localStorage.getItem("finalInitialScore");
+  submissionResponseEl.textContent = lclInitialScore;
+});
