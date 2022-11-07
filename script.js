@@ -6,6 +6,10 @@ const digitalTimer = document.getElementById("countdown");
 let numlog = 0;
 let internalScore = 10;
 let isGameOver = false;
+var submitEl = document.querySelector("#submit");
+var nameInput = document.querySelector("#initials");
+var submissionResponseEl = document.querySelector("#response");
+var form = document.querySelector("form");
 
 //Start button functionality displays 1st Question 'displayFunction, timer start 'countDown' and 'numlog' to advance q
 startBtn.addEventListener("click", function (event) {
@@ -19,10 +23,13 @@ function countDown() {
   const timerdown = setInterval(function () {
     internalScore--;
     digitalTimer.textContent = internalScore;
-    if (internalScore < 0 || isGameOver === true) {
+    if (internalScore <= 0) {
       clearInterval(timerdown);
       var elfinal = document.getElementById("score");
       elfinal.textContent = "You've Lost";
+      form.hidden = false;
+    } else if (isGameOver === true) {
+      clearInterval(timerdown);
     }
   }, INTERVAL);
 }
@@ -43,7 +50,6 @@ function displayFunction(x) {
   var eloption4 = document.getElementById("option4");
   eloption4.textContent = overHead[x].options[3];
 }
-//code block for timer display
 
 // code block to create questions
 function questionCreator(question, options, answer) {
@@ -102,11 +108,18 @@ buttons.forEach(function (button) {
       isGameOver = true;
       var elfinal = document.getElementById("score");
       elfinal.textContent = internalScore;
+      form.hidden = false;
     }
     displayFunction(numlog);
   });
 });
 
-//TODO save the score and initials
-
-// TODO make a question maker form
+submitEl.addEventListener("click", showResponse);
+function showResponse(event) {
+  // Prevent default action
+  event.preventDefault();
+  var response = "Thank you for your submission " + nameInput.value + ".";
+  submissionResponseEl.textContent = response;
+  localStorage.setItem(internalScore, nameInput.value);
+}
+// TODO display scores
